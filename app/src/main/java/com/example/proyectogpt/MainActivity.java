@@ -14,10 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -75,7 +77,14 @@ public class MainActivity extends AppCompatActivity {
         botonReiniciarNombres.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickReiniciarNombres();
+                // Añadir dialogo de confirmación
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Reiniciar lista")
+                        .setMessage("¿Estás seguro de que deseas reiniciar la lista de nombres?")
+                        .setPositiveButton("Sí", (dialog, which) -> onClickReiniciarNombres())
+                        .setNegativeButton("No", null)
+                        .create();
+                alertDialog.show();
             }
         });
 
@@ -139,27 +148,35 @@ public class MainActivity extends AppCompatActivity {
             // Añadir el nombre a la lista
             if (!listaNombres.contains(nombre)) {
                 listaNombres.add(nombre);
-            }
-            // Transformar la lista a JSON
-            Gson gson = new Gson();
-            String listaJson = gson.toJson(listaNombres);
-            
-            // Guardar en SharedPreferences
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("nombreGuardado", nombre);
-            if(contador == null) {
-                contador = 0;
-            }
-            contador++;
-            editor.putInt("contador", contador);
-            editor.putString("listaNombres", listaJson);
-            editor.apply(); // o commit() para guardar inmediatamente
 
-            adaptador.notifyItemInserted(listaNombres.size() - 1);
+                // Transformar la lista a JSON
+                Gson gson = new Gson();
+                String listaJson = gson.toJson(listaNombres);
 
+                // Guardar en SharedPreferences
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("nombreGuardado", nombre);
+                if(contador == null) {
+                    contador = 0;
+                }
+                contador++;
+                editor.putInt("contador", contador);
+                editor.putString("listaNombres", listaJson);
+                editor.apply(); // o commit() para guardar inmediatamente
+
+                adaptador.notifyItemInserted(listaNombres.size() - 1);
+
+                // Mostrar mensaje utilizando snackbar
+                Snackbar.make(findViewById(android.R.id.content), "Nombre guardado con éxito", Snackbar.LENGTH_LONG).show();
+    //            Toast.makeText(MainActivity.this, "🚀 Nombre guardado con éxito", Toast.LENGTH_LONG).show();
+            } else {
+                // Mostrar mensaje utilizando snackbar
+                Snackbar.make(findViewById(android.R.id.content), "El nombre ya está guardado", Snackbar.LENGTH_LONG).show();
+    //            Toast.makeText(MainActivity.this, "🚀 El nombre ya está guardado", Toast.LENGTH_LONG).show();
+            }
+        } else {
             // Mostrar mensaje utilizando snackbar
-            Snackbar.make(findViewById(android.R.id.content), "Nombre guardado con éxito", Snackbar.LENGTH_LONG).show();
-//            Toast.makeText(MainActivity.this, "🚀 Nombre guardado con éxito", Toast.LENGTH_LONG).show();
+            Snackbar.make(findViewById(android.R.id.content), "Debes escribir un nombre", Snackbar.LENGTH_LONG).show();
         }
     }
 
