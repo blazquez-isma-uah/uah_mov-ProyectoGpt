@@ -1,5 +1,6 @@
 package com.example.proyectogpt;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,14 +43,19 @@ public class MainActivity extends AppCompatActivity {
                 if (nombre.isEmpty()) {
                     textoSaludo.setTextColor(Color.RED);
                     textoSaludo.setText("Debes escribir tu nombre!");
-                    entradaNombre.requestFocus();
-                    return;
+                } else {
+                    nombre = nombre.trim();
+                    nombre = nombre.substring(0, 1).toUpperCase() + nombre.substring(1);
+                    nombre = nombre.replace("\n", " ");
+                    textoSaludo.setTextColor(Color.BLUE);
+                    textoSaludo.setTextSize(30);
+                    textoSaludo.setText("Hola, " + nombre + "!");
+                    entradaNombre.setText(nombre);
                 }
-                nombre = nombre.trim();
-                nombre = nombre.substring(0, 1).toUpperCase() + nombre.substring(1);
-                nombre = nombre.replace("\n", " ");
-                entradaNombre.setText(nombre);
-                textoSaludo.setText("Hola, " + nombre + "!");
+
+                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                intent.putExtra("nombreUsuario", nombre);
+                startActivity(intent);
             }
         });
     }
