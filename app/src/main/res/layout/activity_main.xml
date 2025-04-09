@@ -24,6 +24,12 @@
         android:layout_height="wrap_content"
         android:text="Guardar Nombre" />
 
+    <Button
+        android:id="@+id/botonReiniciarNombres"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reiniciar Nombres" />
+
     <TextView
         android:id="@+id/textoSaludo"
         android:layout_width="wrap_content"

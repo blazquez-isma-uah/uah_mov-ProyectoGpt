@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NombreAdapter extends RecyclerView.Adapter<NombreAdapter.ViewHolder> {
@@ -15,7 +16,11 @@ public class NombreAdapter extends RecyclerView.Adapter<NombreAdapter.ViewHolder
     private List<String> listaNombres;
 
     public NombreAdapter(List<String> listaNombres) {
-        this.listaNombres = listaNombres;
+        if (listaNombres != null) {
+            this.listaNombres = listaNombres;
+        }else {
+            this.listaNombres = new ArrayList<>();
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
