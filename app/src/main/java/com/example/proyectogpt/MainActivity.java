@@ -16,6 +16,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,21 +45,20 @@ public class MainActivity extends AppCompatActivity {
         botonGuardar = findViewById(R.id.botonGuardar);
         textoSaludo = findViewById(R.id.textoSaludo);
 
-        // Recuperar el nombre guardado de SharedPreferences si existe
-        SharedPreferences sharedPreferences = getSharedPreferences("misDatos", MODE_PRIVATE);
-        String nombreGuardado = sharedPreferences.getString("nombreGuardado", null);
-        contador = sharedPreferences.getInt("contador", 0);
+        // Configurar el RecyclerView
+        RecyclerView miRecycler = findViewById(R.id.miRecycler);
+        miRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-        if (nombreGuardado != null) {
-            entradaNombre.setText(nombreGuardado);
-            textoSaludo.setTextColor(Color.BLUE);
-            textoSaludo.setTextSize(30);
-            textoSaludo.setText("Hola de nuevo " + nombreGuardado + "! -> " + contador);
-        } else {
-            textoSaludo.setTextColor(Color.RED);
-            textoSaludo.setTextSize(20);
-            textoSaludo.setText("No se encontró un nombre guardado. -> " + contador);
-        }
+        // Crear una lista de nombres (puedes reemplazar esto con tus datos)
+        List<String> nombres = List.of("Ismael", "Juan", "María", "Pedro", "Ana", "Luis");
+
+        // Crear el adaptador y asignarlo al RecyclerView
+        NombreAdapter adaptador = new NombreAdapter(nombres);
+        miRecycler.setAdapter(adaptador);
+
+
+        // Recuperar el nombre guardado de SharedPreferences si existe
+        getSharedPreferencesName();
 
         botonSaludo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +104,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void getSharedPreferencesName() {
+        SharedPreferences sharedPreferences = getSharedPreferences("misDatos", MODE_PRIVATE);
+        String nombreGuardado = sharedPreferences.getString("nombreGuardado", null);
+        contador = sharedPreferences.getInt("contador", 0);
+
+        if (nombreGuardado != null) {
+            entradaNombre.setText(nombreGuardado);
+            textoSaludo.setTextColor(Color.BLUE);
+            textoSaludo.setTextSize(30);
+            textoSaludo.setText("Hola de nuevo " + nombreGuardado + "! -> " + contador);
+        } else {
+            textoSaludo.setTextColor(Color.RED);
+            textoSaludo.setTextSize(20);
+            textoSaludo.setText("No se encontró un nombre guardado. -> " + contador);
+        }
     }
 
     @Override
