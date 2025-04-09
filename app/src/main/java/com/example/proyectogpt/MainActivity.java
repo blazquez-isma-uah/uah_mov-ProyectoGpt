@@ -157,7 +157,9 @@ public class MainActivity extends AppCompatActivity {
 
             adaptador.notifyItemInserted(listaNombres.size() - 1);
 
-            Toast.makeText(MainActivity.this, "Nombre guardado", Toast.LENGTH_SHORT).show();
+            // Mostrar mensaje utilizando snackbar
+            Snackbar.make(findViewById(android.R.id.content), "Nombre guardado con éxito", Snackbar.LENGTH_LONG).show();
+//            Toast.makeText(MainActivity.this, "🚀 Nombre guardado con éxito", Toast.LENGTH_LONG).show();
         }
     }
 
