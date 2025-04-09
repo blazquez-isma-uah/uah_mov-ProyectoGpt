@@ -18,6 +18,12 @@
         android:layout_height="wrap_content"
         android:text="Saludar" />
 
+    <Button
+        android:id="@+id/botonGuardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guardar Nombre" />
+
     <TextView
         android:id="@+id/textoSaludo"
         android:layout_width="wrap_content"
