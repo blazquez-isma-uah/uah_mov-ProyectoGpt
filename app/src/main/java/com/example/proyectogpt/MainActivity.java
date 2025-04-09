@@ -1,10 +1,12 @@
 package com.example.proyectogpt;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     NombreAdapter adaptador;
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,19 +75,44 @@ public class MainActivity extends AppCompatActivity {
         botonReiniciarNombres.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Reiniciar la lista de nombres
-                int previoSize = listaNombres.size();
-                listaNombres.clear();
-                adaptador.notifyItemRangeRemoved(0, previoSize);
-
-                // Guardar en SharedPreferences
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("listaNombres", null);
-                editor.apply();
-
-                Toast.makeText(MainActivity.this, "Lista de nombres reiniciada", Toast.LENGTH_SHORT).show();
+                onClickReiniciarNombres();
             }
         });
+
+        botonSaludo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTouchSaludo(event);
+            }
+        });
+
+    }
+
+    private boolean onTouchSaludo(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                botonSaludo.setBackgroundColor(Color.YELLOW); // Al presionar
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                botonSaludo.setBackgroundColor(Color.MAGENTA); // Al soltar
+                break;
+        }
+        return false;
+    }
+
+    private void onClickReiniciarNombres() {
+        // Reiniciar la lista de nombres
+        int previoSize = listaNombres.size();
+        listaNombres.clear();
+        adaptador.notifyItemRangeRemoved(0, previoSize);
+
+        // Guardar en SharedPreferences
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("listaNombres", null);
+        editor.apply();
+
+        Toast.makeText(MainActivity.this, "Lista de nombres reiniciada", Toast.LENGTH_SHORT).show();
     }
 
     private void getRecyclerView() {
